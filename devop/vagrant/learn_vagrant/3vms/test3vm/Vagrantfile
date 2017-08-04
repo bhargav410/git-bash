@@ -1,0 +1,47 @@
+Vagrant.configure ("2") do |config|
+ config.vm.box = "aerospike/centos-6.5"
+ config.vm.network "public_network"
+
+  config.vm.define "nginux" do |nginx|
+  nginx.vm.hostname = 'cennginx'
+
+   config.vm.provision "shell", inline: <<-SHELL
+    yum install -y nginx
+    service nginx start
+    service nginx status
+    chkconfig nginx on
+   SHELL
+  end
+
+  config.vm.define "httpd" do |httpd|
+  httpd.vm.hostname = 'cenhttpd'
+  
+   config.vm.provider "virtualbox" do |vb|
+   vb.memory ="1240"
+
+    config.vm.provision "shell", inline: <<-SHELL
+    yum install -y httpd
+    service httpd start
+    service httpd status
+    chkconfig httpd on
+   SHELL
+  end
+ end
+
+   config.vm.define "mysql" do |mysql|
+   mysql.vm.hostname = 'cenmysql'
+
+     config.vm.provider "virtualbox" do |vb|
+     vb.memory = "1024"
+
+    config.vm.provision "shell", inline: <<-SHELL
+    yum install -y mysql-server
+    service mysqld start
+    service mysqld status
+    chkconfig mysqld on
+   SHELL
+  end
+ end
+end
+
+

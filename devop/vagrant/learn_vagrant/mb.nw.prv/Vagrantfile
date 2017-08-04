@@ -1,0 +1,25 @@
+Vagrant.configure("2") do |config|
+
+config.vm.network "public_network"
+
+config.vm.provision "shell", inline: <<-SHELL
+adduser balutest
+SHELL
+
+  config.vm.define "ubuntu" do |ubuntu|
+  ubuntu.vm.box = "ubuntu/trusty64"
+  ubuntu.vm.hostname = 'ubu'
+
+  config.vm.provider "virtualbox" do |vb|
+  vb.memory= "1024"
+  end
+ end
+
+config.vm.define "centos" do |centos|
+  centos.vm.box ="aerospike/centos-6.5"
+  centos.vm.hostname = 'cent'
+ end
+end
+
+
+
